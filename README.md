@@ -1,12 +1,43 @@
-# React + Vite
+# Weekly planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+Simple weekly planner app that helps users organize their tasks by day.
+The app allows users to add, edit and save edited tasks, mark as done, and delete tasks - all saved with Firebase.  
+Users can log in with their google account to securely access their planner.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is a test project that uses an external API. **The API key is temporarily exposed** for testing and demonstration purposes. 
+**IMPORTANT**: Never expose your API keys in production or public projects, as this can compromise the security of your application.
 
-## Expanding the ESLint configuration
+**Features:**
+- Google login to securely access your tasks
+- Add tasks with ot without a time 
+- Edit ot delete tasks 
+- Mark tasks as done or not done
+- Google login authentication
+- Data stored in Firebase
+- UI with animations and cute mascot
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Technologies:**
+- React
+- Firebase (Auth and Firestore)
+- Tailwind CSS
+- Framer Motion
+
+## How to run weekly planner
+
+Follow the steps:
+
+- **Node.js**: A JavaScript runtime that is required to run the app. [Download Node.js](https://nodejs.org/)
+- clone the repository
+   ```bash
+   git clone https://github.com/username/repository-name.git
+- access repository-name
+    ```bash
+   cd planner--
+- Install dependencies 
+    ```bash
+   npm install 
+- run app 
+    ```bash
+    npm run dev   
+Made with 💜 by Dyane Albuquerque 

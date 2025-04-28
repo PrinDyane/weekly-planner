@@ -2,14 +2,16 @@ import {initializeApp} from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCyyHoV67mKWztqJoMYAg8_ihB-1E868hc",
-    authDomain: "planner-ab6ef.firebaseapp.com",
-    projectId: "planner-ab6ef",
-    storageBucket: "planner-ab6ef.firebasestorage.app",
-    messagingSenderId: "1093765856264",
-    appId: "1:1093765856264:web:ecfec0fa03fa121b1ba5bd"
+  const firebaseConfig = {
+    apiKey: import.meta.env.VITE_API_KEY,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_APP_ID
   };
+  console.log('jeejee');
+  console.log(firebaseConfig);
 
   const app = initializeApp(firebaseConfig);
 
