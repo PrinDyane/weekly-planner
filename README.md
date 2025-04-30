@@ -1,5 +1,8 @@
 # Weekly planner
 
+<img src="src/assets/login.png" alt="Login" width="500"/>
+<img src="src/assets/planner.png" alt="Login" width="500"/>
+
 
 Simple weekly planner app that helps users organize their tasks by day.
 The app allows users to add, edit and save edited tasks, mark as done, and delete tasks - all saved with Firebase.  
@@ -10,7 +13,7 @@ This is a test project that uses an external API. **The API key is temporarily e
 
 **Features:**
 - Google login to securely access your tasks
-- Add tasks with ot without a time 
+- Add tasks with or without a time 
 - Edit ot delete tasks 
 - Mark tasks as done or not done
 - Google login authentication
@@ -28,16 +31,16 @@ This is a test project that uses an external API. **The API key is temporarily e
 Follow the steps:
 
 - **Node.js**: A JavaScript runtime that is required to run the app. [Download Node.js](https://nodejs.org/)
-- clone the repository
+- Clone the repository
    ```bash
    git clone https://github.com/username/repository-name.git
-- access repository-name
+- Access repository-name
     ```bash
    cd planner--
 - Install dependencies 
     ```bash
    npm install 
-- run app 
+- Run app 
     ```bash
     npm run dev   
 Made with 💜 by Dyane Albuquerque 
