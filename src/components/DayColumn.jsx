@@ -3,8 +3,9 @@ import {db} from "../firebase";
 import { collection, addDoc, getDocs, query, where, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import {motion, AnimatePresence} from "framer-motion";
 
+
 // componet for each day column
-const DayColumn = ({day, user}) => {
+const DayColumn = ({day, user, daysOfWeek}) => {
     //states for task and inputs
     const [tasks, setTasks] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -13,6 +14,8 @@ const DayColumn = ({day, user}) => {
     const [editText, setEditText] = useState('');
     const [showMessage, setShowMessage] = useState(false);
     const isFormValid = inputValue.trim() !== ''; // check if input is not empty
+    const [copyingTask, setCopyingTask] = useState (null);
+    const [selectDay, setSelectDay] = useState('');
 
     //load tasks from Firestore when day or user change
     useEffect(() => {
@@ -84,6 +87,23 @@ const DayColumn = ({day, user}) => {
         setEditingTaskId(null);
         setEditText("");
     };
+
+    const copyTask = async (taskId) => {
+        const taskToCopy = tasks.find(task => task.id === taskId);
+        if (!taskToCopy || !selectDay) {
+            return;
+        }
+        const newTask = {
+            user,
+            day: selectDay,
+            text: taskToCopy.text,
+            time: taskToCopy.time,
+            done: false,
+    };
+        const docRef = await addDoc(collection(db, "tasks"), newTask);
+        setCopyingTask(null);
+        setSelectDay('');
+    };
     
 
     return (
@@ -144,62 +164,93 @@ const DayColumn = ({day, user}) => {
                 {/** allow user to edit task */}
                 {tasks.map((task) =>(
                     <li key={task.id} className="bg-white p-4 rounded-xl 
-                    shadow flex flex-col border border-[#e0d6ff] 
-                    transition hover:shadow-md ">
-                        <div className="mb-2">
-                            {editingTaskId === task.id ? (
-                                <input
-                                    type="text"
-                                    value={editText}
-                                    onChange={(e) => setEditText(e.target.value)}
-                                    className="border rounded p-2 w-full 
-                                    bg-white text-[#2e2e2e] 
-                                    border-[#dcd1ff]"
-                                />
-                            ) : (
-                            <p className={task.done ? "line-through text-[#b19cd9]" : 
-                            "text-[#2E2E2E] "}>
-                                    * {task.text} * {task.time}
-                                </p>
+                    shadow border border-[#e0d6ff] transition hover:shadow-md ">
+
+                        <div className="flex justify-between items-start gap-4">
+                            <div className="flex-1">
+                                {editingTaskId === task.id ? (
+                                    <input
+                                        type="text"
+                                        value={editText}
+                                        onChange={(e) => setEditText(e.target.value)}
+                                        className="border rounded p-2 w-full 
+                                        bg-white text-[#2e2e2e] 
+                                        border-[#dcd1ff]"
+                                    />
+                                    ) : (
+                                    <p className={task.done ? "line-through text-[#b19cd9]" : 
+                                    "text-[#2E2E2E] "}>
+                                            * {task.text} * {task.time}
+                                    </p>
                             )}
                         </div>
 
-                        <div className="flex justify-end gap-3 text-sm text-[#6b5bb5]">
-                            <button
-                                title={task.done ? "Done" : "Not done"}
-                                className="border-none hover:ring-2 
-                                hover:ring-[#A18BFF] 
-                                focus:outline-none"
-                                onClick={() => toggleDone(task.id, task.done)}>
-                                    {task.done ? "✔️" : "❌" }
+                        <div className="flex flex-col items-end gap-2 text-sm text-[#6b5bb5]">
+                            <div className="flex gap-2 flex-wrap">
+                                <button
+                                    title={task.done ? "Done" : "Not done"}
+                                    className="border-none hover:ring-2 
+                                    hover:ring-[#A18BFF] 
+                                    focus:outline-none"
+                                    onClick={() => toggleDone(task.id, task.done)}>
+                                        {task.done ? "✔️" : "❌" }
+                                </button>
+                                
+                                {copyingTask === task.id && (
+                                    <div className="mt-2">
+                                        <select value={selectDay} onChange={(e) => setSelectDay(e.target.value)}
+                                        className="p-2 rounded-md bg-white text-[#6b5bb5]">
+                                            <option value="">Select day</option>
+                                            {daysOfWeek.map((daysOfWeek) => (
+                                                <option key={daysOfWeek} value={daysOfWeek}>
+                                                    {daysOfWeek}
+                                                </option>
+                                            ))}
+                                            </select>
+                                            <button 
+                                                onClick={() => copyTask(task.id)} 
+                                                className="bg-[#24e290] text-white font-bold py-1 px-4 rounded-lg mt-2">
+                                                Confirm copy
+                                            </button>
+                                    </div>
+                                )}
+
+                                {editingTaskId === task.id ? (
+                                    <button 
+                                        title="Save"
+                                        className="border-none hover:ring-2 
+                                        hover:ring-[#A18BFF] focus:outline-none"
+                                        onClick={() =>    saveEdit(task.id)} > 
+                                        💾
+                                    </button>
+                                ):(
+                                    <button 
+                                        title="Edit task"
+                                        className="border-none hover:ring-2 
+                                        hover:ring-[#A18BFF] focus:outline-none"
+                                        onClick={() => startEdit(task)} >
+                                            ✏️
+                                    </button>
+                                )}
+                            
+                            <button 
+                                    title="Delete task"
+                                    className="border-none hover:ring-2 hover:ring-[#A18BFF] 
+                                    focus:outline-none"
+                                    onClick={() => deleteTask(task.id)} >
+                                        🗑️
                             </button>
-
-                            {editingTaskId === task.id ? (
-                                 <button 
-                                    title="Save"
+                            <button
+                                    title="Copy task"
                                     className="border-none hover:ring-2 
-                                    hover:ring-[#A18BFF] focus:outline-none"
-                                    onClick={() =>    saveEdit(task.id)} > 
-                                    💾
-                                 </button>
-                            ):(
-                                <button 
-                                    title="Edit task"
-                                    className="border-none hover:ring-2 
-                                    hover:ring-[#A18BFF] focus:outline-none"
-                                    onClick={() => startEdit(task)} >
-                                        ✏️
-                                 </button>
-                            )}
-                           
-                           <button 
-                                title="Delete task"
-                                className="border-none hover:ring-2 hover:ring-[#A18BFF] 
-                                focus:outline-none"
-                                onClick={() => deleteTask(task.id)} >
-                                     🗑️
-                           </button>
+                                    hover:ring-[#A18BFF] 
+                                    focus:outline-none"
+                                    onClick={() => setCopyingTask(task.id)}>
+                                    ➕ 
+                                </button>
                         </div>
+                    </div>
+                    </div>
                     </li>
                 ))}
             </ul>
