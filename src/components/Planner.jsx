@@ -11,7 +11,7 @@ const Planner = ({user, onLogout}) => {
 
       <div className="min-h-screen bg-[#f8f8f8] p-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-center text-[#A18BFF] mb-4 ">Week 2</h2>
+          <h2 className="text-xl font-bold text-center text-[#A18BFF] mb-4 ">Week 1</h2>
           <h1 className="text-2xl font-bold text-[#24E290]"> 
             Hello, {user}! 📝
           </h1>

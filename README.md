@@ -33,7 +33,7 @@ Follow the steps:
 - **Node.js**: A JavaScript runtime that is required to run the app. [Download Node.js](https://nodejs.org/)
 - Clone the repository
    ```bash
-   git clone https://github.com/username/repository-name.git
+   git clone https://github.com/PrinDyane/weekly-planner
 - Access repository-name
     ```bash
    cd planner--
